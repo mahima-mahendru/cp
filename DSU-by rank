@@ -1,0 +1,23 @@
+ll r[1000001];
+ll parent[1000001];
+
+ll getp(ll a)
+{
+    return parent[a]==a?a:getp(parent[a]);
+}
+void unite(ll a,ll b)
+{
+        ll u=getp(a),v=getp(b);
+        if(u==v)return;
+    
+        if(r[u]>r[v])
+        {
+            parent[v]=u;
+            r[u]+=r[v];
+        }
+        else{
+            parent[u]=v;
+            r[v]+=r[u];
+        }
+    
+}
