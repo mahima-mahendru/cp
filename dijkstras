@@ -1,0 +1,87 @@
+#include <bits/stdc++.h>
+# define ll long long int
+# define endl "\n"
+using namespace std;
+
+int main() {
+
+ios_base::sync_with_stdio(false);
+cin.tie(0);
+cout.tie(0);
+	int n,p;
+	cin>>n>>p;
+	map<pair<ll,ll>,ll>m;
+	vector<pair<ll,ll>>a[n+1];
+	for(int i=0;i<p;i++)
+	{
+		ll x,y,z;
+		cin>>x>>y>>z;
+		if(x==y)continue;
+		if(x>y)
+		swap(x,y);
+		if(m.find({x,y})==m.end())
+		{
+			m[{x,y}]=z;
+			//m[{y,x}]=z;
+		}
+		else{
+			m[{x,y}]=min(m[{x,y}],z);
+		}
+		
+	}
+	for(auto j:m)
+	{
+		a[j.first.first].push_back({j.first.second,j.second});
+		a[j.first.second].push_back({j.first.first,j.second});
+		
+	}
+	int path[n+1];
+	ll d[n+1];
+	for(int i=1;i<=n;i++)
+	d[i]=1e18;
+	d[1]=0;
+	set<pair<ll,ll>>t;
+	t.insert({0,1});
+	int v[100001]={};
+	v[1]=1;
+	while(t.size())
+	{
+			int w=(*t.begin()).first;
+			int vy=(*t.begin()).second;
+			t.erase(t.begin());
+			//cout<<vy<<endl;
+			for(auto j:a[vy])
+			{
+				//cout<<j.first<<"  ";
+				//if(v[j.first])continue;
+					if(d[j.first]>d[vy]+j.second)
+					{
+						path[j.first]=vy;
+						d[j.first]=d[vy]+j.second;
+						v[j.first]=1;
+						t.insert(make_pair(d[j.first],j.first));
+					}
+			}
+			//cout<<endl;
+			//if(v[n])break;
+	}
+	if(v[n]==0)
+	{
+		cout<<"-1\n";
+		return 0;
+	}
+	vector<int>r;
+	int val=n;
+	while(1)
+	{
+		r.push_back(val);
+		if(val==1)break;
+		val=path[val];
+
+	}
+	// printing path
+	for(int i=r.size()-1;i>=0;i--)
+	cout<<r[i]<<" ";
+	cout<<endl;
+
+}
